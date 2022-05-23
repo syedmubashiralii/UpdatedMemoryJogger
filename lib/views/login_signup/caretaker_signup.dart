@@ -28,7 +28,8 @@ class _CaretakerSignupState extends State<CaretakerSignup> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Caretaker Signup'),
+          title: Text('            Caretaker'),
+          backgroundColor: Colors.deepPurple,
         ),
         body: MyBackground(
             child: SafeArea(
@@ -40,17 +41,45 @@ class _CaretakerSignupState extends State<CaretakerSignup> {
                   height: 30,
                 ),
                 imageProfile(context),
-                MyInputField(controller: fullname, hint: "N A M E"),
-                MyInputField(controller: email, hint: "E M A I L"),
-                MyInputField(controller: relation, hint: "R E L A T I O N"),
-                MyPasswordInputField(controller: password, hint: "P A S S W O R D"),
+                MyInputField(
+                  controller: fullname,
+                  hint: "Name",
+                ),
+                MyInputField(
+                  controller: email,
+                  hint: "Email",
+                ),
+                MyInputField(
+                  controller: relation,
+                  hint: "Relation",
+                ),
+                MyPasswordInputField(
+                  controller: password,
+                  hint: "Password",
+                ),
                 const SizedBox(
                   height: 10,
                 ),
                 MyButton(
                     text: "Sign Up",
+                    onTap: () async {
+                      if (_imageFile == null ||
+                          fullname.text == "" ||
+                          email.text == "" ||
+                          relation.text == "" ||
+                          password.text == "") {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text("Please enter complete data!")));
+                        //return;
+                      } else {
+                        await uploadFile(_imageFile);
+                      }
+                    }),
+                MyButton(
+                    text: "Select Doctor",
                     onTap: () {
-                      uploadFile(_imageFile);
+                      Navigator.pushNamed(context, '/selectdoctor');
                     }),
               ],
             ),
@@ -86,7 +115,7 @@ class _CaretakerSignupState extends State<CaretakerSignup> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -169,16 +198,22 @@ class _CaretakerSignupState extends State<CaretakerSignup> {
     print('response received....');
 
     if (res.statusCode == 200) {
+      var result = await res.stream.bytesToString();
+      print(result);
+      Utilities.caretakerid = int.parse(result);
       print('OK Call');
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Caretaker added Successfully!")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Caretaker added Successfully!" +
+              Utilities.caretakerid.toString())));
       EasyLoading.dismiss();
-      Navigator.pushNamed(context, '/caretaker_login');
+      Navigator.pushNamed(context, '/selectdoctor');
     } else {
       print('Not Uploaded');
       EasyLoading.dismiss();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Oops!Something went wrong")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Oops!Something went wrong")));
     }
   }
 }

@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:flutter_application_mj/views/listofcaretaker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../../controllers/utilites.dart';
 import '../widgets.dart';
@@ -15,55 +16,78 @@ class DoctorLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Doctor Login"),
-        ),
-        body: MyBackground(
-            child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 25),
-                Center(
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage('assets/images/login.png'),
+      backgroundColor: Colors.grey[300],
+      body: MyBackground(
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.person,
+                    size: 100,
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                MyInputField(controller: email, hint: "E M A I L"),
-                MyPasswordInputField(
-                    controller: password, hint: "P A S S W O R D"),
-                const SizedBox(
-                  height: 10,
-                ),
-                MyButton(
-                    text: "Login",
-                    onTap: () {
-                      login(context);
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                    child: TextButton(
-                        onPressed: () {
+                  SizedBox(height: 50),
+                  //hello
+                  Text(
+                    "Hello Doctor!",
+                    style: GoogleFonts.bebasNeue(fontSize: 52),
+                  ),
+                  SizedBox(height: 10),
+                  const Text(
+                    "Wellcome back you've been missed",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(height: 50),
+                  //emailtextfield
+                  MyInputField(controller: email, hint: "Email"),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  //passwordtextfield
+                  MyPasswordInputField(controller: password, hint: 'Password'),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  //login button
+                  MyButton(
+                      text: 'Login',
+                      onTap: () {
+                        login(context);
+                      }),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  //not a member ?registernow
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Not a member? ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      InkWell(
+                        onTap: () {
                           Navigator.pushNamed(context, '/doctor_signup');
                         },
                         child: Text(
-                          "Don't Have an Account? SignUp",
+                          'Register Now',
                           style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        )))
-              ],
+                              color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        )));
+        ),
+      ),
+    );
   }
 
   //create function to call login api
@@ -79,8 +103,9 @@ class DoctorLogin extends StatelessWidget {
       );
       if (response.statusCode == 200) {
         Utilities.doctorid = int.parse(response.body.toString());
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("login successfull")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: Duration(seconds: 1),
+            content: Text("login successfull")));
         EasyLoading.dismiss();
         // Navigator.pushNamed(context, '/listofcaretaker');
         Navigator.push(
@@ -88,12 +113,15 @@ class DoctorLogin extends StatelessWidget {
           MaterialPageRoute(builder: (context) => ListOfCaretaker()),
         );
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("invalid email/password")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: Duration(seconds: 1),
+            content: Text("invalid email/password")));
+        EasyLoading.dismiss();
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Blank email/password not Allowed!")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Blank email/password not Allowed!")));
     }
   }
 }

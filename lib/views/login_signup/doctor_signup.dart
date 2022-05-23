@@ -28,40 +28,81 @@ class _DoctorSignupState extends State<DoctorSignup> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Doctor Signup'),
+          title: Text('                Doctor'),
+          backgroundColor: Colors.deepPurple,
         ),
         body: MyBackground(
-            child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                //
-                imageProfile(context),
-                MyInputField(controller: fullname, hint: "N A M E"),
-                MyInputField(controller: email, hint: "E M A I L"),
-                MyInputField(
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  //
+                  imageProfile(context),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  MyInputField(
+                    controller: fullname,
+                    hint: "Name",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MyInputField(
+                    controller: email,
+                    hint: "Email",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MyInputField(
                     controller: des,
-                    hint: "D O C T O R  D E S C R I P T I O N"),
-                MyInputField(controller: education, hint: "E D U C A T I O N"),
-                MyPasswordInputField(
-                    controller: password, hint: "P A S S W O R D"),
+                    hint: "Doctor Description",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MyInputField(
+                    controller: education,
+                    hint: "Education",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MyPasswordInputField(
+                    controller: password,
+                    hint: "Password",
+                  ),
 
-                const SizedBox(
-                  height: 10,
-                ),
-                MyButton(
-                    text: "Signup",
-                    onTap: () {
-                      uploadFileDoc(_imageFile);
-                    }),
-              ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MyButton(
+                      text: "Signup",
+                      onTap: () async {
+                        if (_imageFile == null ||
+                            fullname.text == "" ||
+                            email.text == "" ||
+                            education.text == "" ||
+                            des.text == "" ||
+                            password.text == "") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              duration: Duration(seconds: 1),
+                              content: Text("Please enter complete data!")));
+                          //return;
+                        } else {
+                          await uploadFileDoc(_imageFile);
+                        }
+                      }),
+                ],
+              ),
             ),
           ),
-        )));
+        ));
   }
 
   Widget imageProfile(context) {
@@ -92,7 +133,7 @@ class _DoctorSignupState extends State<DoctorSignup> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -177,15 +218,17 @@ class _DoctorSignupState extends State<DoctorSignup> {
     print('response received....');
     if (res.statusCode == 200) {
       print('OK Call');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Doctor Added Successfully!")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Doctor Added Successfully!")));
       EasyLoading.dismiss();
       Navigator.pushNamed(context, '/doctor_login');
     } else {
       print('Not Uploaded');
       EasyLoading.dismiss();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Oops!Something went wrong")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Oops!Something went wrong")));
     }
   }
 }
