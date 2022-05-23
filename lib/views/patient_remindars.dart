@@ -53,7 +53,6 @@ class _PatientRemindarsState extends State<PatientRemindars> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Visibility(visible: file != null, child: Image.file(file)),
                 InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -66,12 +65,12 @@ class _PatientRemindarsState extends State<PatientRemindars> {
                   height: 30,
                 ),
                 imageProfile(context),
-                MyInputField(controller: remindartype, hint: "Remindar Type"),
+                MyInputField(controller: remindartype, hint: "Remindar Type",),
                 MyInputField(
                     controller: remindardescription,
-                    hint: "Remindar Description"),
-                MyInputField(controller: date, hint: "Date"),
-                MyInputField(controller: time, hint: "Time"),
+                    hint: "Remindar Description",),
+                MyInputField(controller: date, hint: "Date",),
+                MyInputField(controller: time, hint: "Time",),
           
                 const SizedBox(
                   height: 10,

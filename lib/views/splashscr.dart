@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, duplicate_ignore, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, duplicate_ignore, prefer_const_literals_to_create_immutables, unnecessary_cast
 
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ignore: camel_case_types
 class splashscreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _splashscreenState extends State<splashscreen> {
         fit: StackFit.expand,
         children: [
           Container(
-            decoration: BoxDecoration(color: Colors.blueAccent),
+            decoration: BoxDecoration(color: Colors.deepPurple),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -43,22 +44,16 @@ class _splashscreenState extends State<splashscreen> {
                       // ignore: prefer_const_constructors
                       CircleAvatar(
                         backgroundColor: Colors.white,
-                        radius: 50,
+                        radius: 80,
                         // ignore: prefer_const_constructors
-                        child: Icon(
-                          CupertinoIcons.memories,
-                          color: Colors.green,
-                          size: 50.0,
-                        ),
+                        backgroundImage: AssetImage('assets/images/newlogo.jpg')
+                            as ImageProvider,
                       ),
                       // ignore: prefer_const_constructors
                       Padding(padding: EdgeInsets.only(top: 10.0)),
                       Text(
                         'Memory Jogger',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold),
+                        style: GoogleFonts.bebasNeue(fontSize: 40),
                       )
                     ]),
               ),
@@ -66,15 +61,15 @@ class _splashscreenState extends State<splashscreen> {
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CircularProgressIndicator(
-                    color: Colors.green,
+                  CupertinoActivityIndicator(
+                    radius: 25,
+                    color: Colors.black,
                   ),
                   Padding(padding: EdgeInsets.only(top: 20.0)),
-                  Text('Lets Jogg Your Memory...',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold))
+                  Text(
+                    'Lets Jogg Your Memory...',
+                    style: GoogleFonts.bebasNeue(fontSize: 22),
+                  )
                 ],
               ))
             ],

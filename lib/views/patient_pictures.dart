@@ -32,10 +32,12 @@ class _PatientPicturesState extends State<PatientPictures> {
   // Initial Selected Value
   String dropdownvalue = 'Profession';
   ap.AudioPlayer player = ap.AudioPlayer();
+  String text = "Select Date";
   //AudioPlayer audioPlayer = AudioPlayer();
 
   // List of items in our dropdown menu
   var items = [
+    'general',
     'Profession',
     'Education',
     'Interests',
@@ -58,10 +60,17 @@ class _PatientPicturesState extends State<PatientPictures> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Patient Pictures'),
+        appBar: CupertinoNavigationBar(
+          middle: Text('Patient Pictures'),
+          backgroundColor: Colors.deepPurple,
+          leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_rounded)),
+          brightness: Brightness.light,
         ),
-        drawer: const MainDrawer(),
+        // drawer: MainDrawer(),
         body: MyBackground(
             child: SafeArea(
           child: SingleChildScrollView(
@@ -69,14 +78,14 @@ class _PatientPicturesState extends State<PatientPictures> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Visibility(visible: file != null, child: Image.file(file)),
-                InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
+                // InkWell(
+                //     onTap: () {
+                //       Navigator.pop(context);
+                //     },
+                //     child: const Icon(
+                //       Icons.arrow_back,
+                //       color: Colors.black,
+                //     )),
                 const SizedBox(
                   height: 30,
                 ),
@@ -91,25 +100,26 @@ class _PatientPicturesState extends State<PatientPictures> {
                     Text(
                       'Select Memory ',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey[600],
                           fontWeight: FontWeight.w600,
                           fontSize: 16),
                     ),
                     SizedBox(
                       width: 80,
                     ),
+                    // CupertinoPicker(itemExtent: itemExtent, onSelectedItemChanged: onSelectedItemChanged, children: children)
                     DropdownButton(
-                      dropdownColor: Colors.blueAccent,
-                      focusColor: Colors.white,
-                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                      dropdownColor: Colors.deepPurple,
+                      focusColor: Colors.black,
+                      style: TextStyle(color: Colors.black, fontSize: 15),
                       underline: Container(
                         height: 1,
                         color: Colors.black,
                       ),
                       value: dropdownvalue,
-                      icon: const Icon(
-                        CupertinoIcons.arrow_down_circle_fill,
-                        color: Colors.white60,
+                      icon: Icon(
+                        Icons.arrow_downward_rounded,
+                        color: Colors.black,
                       ),
                       items: items.map((String items) {
                         return DropdownMenuItem(
@@ -127,10 +137,15 @@ class _PatientPicturesState extends State<PatientPictures> {
                   ],
                 ),
 
-                MyInputField(controller: memorytype, hint: "Memory Type"),
+                MyInputField(
+                  controller: memorytype,
+                  hint: "Memory Type",
+                ),
                 //MyTextfield(hint: 'MemoryType', icon: Icons.abc_sharp, textEditingController: memorytype),
                 MyInputField(
-                    controller: memorydescription, hint: "Memory Description"),
+                  controller: memorydescription,
+                  hint: "Memory Description",
+                ),
                 // MyInputField(controller: date, hint: "Date"),
                 InkWell(
                   onTap: () async {
@@ -138,10 +153,11 @@ class _PatientPicturesState extends State<PatientPictures> {
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(1900),
-                        lastDate: DateTime(20223));
+                        lastDate: DateTime(2023));
                     if (pickedDate != null) {
                       date = DateTime.parse(pickedDate.toString());
-                      print(date);
+                      setState(() {});
+                      text = pickedDate.toString().split(' ')[0];
                     }
                   },
                   child: Container(
@@ -150,12 +166,13 @@ class _PatientPicturesState extends State<PatientPictures> {
                     width: Utilities.getSize(context).width,
                     height: 40,
                     decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black.withOpacity(0.4), blurRadius: 5)
                       ],
                       borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
+                      color: Colors.grey[200],
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -168,16 +185,16 @@ class _PatientPicturesState extends State<PatientPictures> {
                                     blurRadius: 5)
                               ],
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.blueAccent,
+                              color: Colors.deepPurple,
                             ),
                             child: Icon(Icons.date_range_rounded)),
                         SizedBox(
                           width: 15,
                         ),
                         Text(
-                          "SELECT DATE",
+                          text,
                           style: TextStyle(
-                              color: Colors.blueAccent,
+                              color: Colors.deepPurple,
                               fontWeight: FontWeight.w600),
                         ),
                         SizedBox(
@@ -189,14 +206,15 @@ class _PatientPicturesState extends State<PatientPictures> {
                 ),
                 Container(
                     decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withOpacity(0.4),
                               blurRadius: 5)
                         ],
                         borderRadius: BorderRadius.circular(15),
-                        color: Colors.white),
-                    height: 70,
+                        color: Colors.grey[200]),
+                    height: 60,
                     width: Utilities.getSize(context).width,
                     child: AudioRecorder(
                       onStop: (path) async {
@@ -208,8 +226,12 @@ class _PatientPicturesState extends State<PatientPictures> {
                 MyButton(
                     text: "Next",
                     onTap: () async {
-                      if (Utilities.audiopath.isEmpty&&memorydescription.text.isEmpty&&memorytype.text.isEmpty&&pickedDate.toString().isEmpty&&_imageFile.toString().isEmpty) {
+                      if (Utilities.audiopath == "" ||
+                          _imageFile == null ||
+                          memorydescription.text == "" ||
+                          memorytype.text == "") {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
                             content: Text("Please enter complete data!")));
                         //return;
                       } else {
@@ -224,15 +246,8 @@ class _PatientPicturesState extends State<PatientPictures> {
                 InkWell(
                     onTap: () async {
                       try {
-                        print(Utilities.baseurl +
-                            "/memoryjogger/Content/Audio/audio2391229551833672720.m4a");
-
-                        // await audioPlayer.setUrl(Utilities.baseurl +
-                        //     "/memoryjogger/Content/Audio/audio2391229551833672720.m4a");
-                        await player.setAudioSource(AudioSource.uri(Uri.parse(
-                            "http://192.168.43.24/memoryjogger/Content/Audio/audio7365682922559329978.m4a")));
-                        // await player.setUrl(Utilities.baseurl +
-                        //     "/memoryjogger/Content/Audio/audio2391229551833672720.m4a");
+                        await player.setAudioSource(AudioSource.uri(
+                            Uri.parse(Utilities.audiopath.toString())));
                         player.play();
                       } catch (ex) {
                         print(ex);
@@ -339,6 +354,7 @@ class _PatientPicturesState extends State<PatientPictures> {
   Future<void> uploadpatientpictures(io.File f, String f1) async {
     print('Image path ' + f.path);
     print("audiopath" + f1);
+    print(Utilities.caretakerid.toString());
     EasyLoading.show();
     var request = http.MultipartRequest(
         'POST',
@@ -350,7 +366,11 @@ class _PatientPicturesState extends State<PatientPictures> {
             "&memorydec=" +
             memorydescription.text +
             "&date=" +
-            date.toString()));
+            date.toString() +
+            "&cid=" +
+            Utilities.caretakerid.toString() +
+            "&did=" +
+            Utilities.doctorid.toString()));
     request.files.add(await http.MultipartFile.fromPath('photo', f.path));
 
     //request.headers.addAll({'Content-type': 'multipart/formdata'});
@@ -358,21 +378,23 @@ class _PatientPicturesState extends State<PatientPictures> {
     request.files.add(await http.MultipartFile.fromPath('audio', f1));
 
     request.headers.addAll({'Content-type': 'multipart/formdata'});
-    print('sending request...');
+    print('Sending request...');
 
     var res = await request.send();
     print(res.statusCode);
     if (res.statusCode == 200) {
-      print('OK Call');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Memory Added Successfully!")));
+      print('Ok Call');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Memory Added Successfully!")));
       EasyLoading.dismiss();
       // Navigator.pushNamed(context, '/');
     } else {
       print('Not Uploaded');
       EasyLoading.dismiss();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Oops!Something went wrong")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Oops!Something went wrong")));
     }
   }
 }

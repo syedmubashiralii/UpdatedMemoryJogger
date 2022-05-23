@@ -6,6 +6,7 @@ import 'package:flutter_application_mj/views/patient_personal_info.dart';
 import 'package:flutter_application_mj/views/patient_pictures.dart';
 import 'package:flutter_application_mj/views/patient_remindars.dart';
 import 'package:flutter_application_mj/views/splash.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../controllers/utilites.dart';
 
 //mybutton widget
@@ -26,22 +27,24 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(15),
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-          width: Utilities.getSize(context).width * 0.5,
-          decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white)),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(top: 5, bottom: 5),
+        width: Utilities.getSize(context).width * 0.9,
+        padding: EdgeInsets.only(top: 16, bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.deepPurple,
+          boxShadow: [
+            BoxShadow(color: Colors.white.withOpacity(0.4), blurRadius: 10)
+          ],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
           child: Text(
             text,
-            textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ),
       ),
@@ -68,13 +71,82 @@ class _MyBackgroundState extends State<MyBackground> {
       height: Utilities.getSize(context).height,
       width: Utilities.getSize(context).width,
       child: widget.child,
-      // color: Colors.deepPurple,
-      decoration: const BoxDecoration(
-          //color: Colors.teal,
-          image: DecorationImage(
-        fit: BoxFit.cover,
-        image: AssetImage("assets/images/background_image.png"),
-      )),
+      color: Colors.grey[300],
+      // decoration: const BoxDecoration(
+      //     image: DecorationImage(
+      //   fit: BoxFit.cover,
+      //   image: AssetImage("assets/images/background_image.png"),
+      // )
+      // ),
+    );
+  }
+}
+
+class MyBackgroundPurple extends StatefulWidget {
+  Widget child;
+  MyBackgroundPurple({Key? key, required this.child}) : super(key: key);
+
+  @override
+  State<MyBackgroundPurple> createState() => _MyBackgroundPurpleState();
+}
+
+class _MyBackgroundPurpleState extends State<MyBackgroundPurple> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      height: Utilities.getSize(context).height,
+      width: Utilities.getSize(context).width,
+      child: widget.child,
+      color: Colors.deepPurple,
+      // decoration: const BoxDecoration(
+      //     image: DecorationImage(
+      //   fit: BoxFit.cover,
+      //   image: AssetImage("assets/images/background_image.png"),
+      // )
+      // ),
+    );
+  }
+}
+
+class ButtonPurple extends StatelessWidget {
+  String text;
+  double? textSize = 12;
+  FontWeight? fontWeight = FontWeight.w600;
+  VoidCallback onTap;
+  ButtonPurple(
+      {Key? key,
+      required this.text,
+      this.textSize,
+      this.fontWeight,
+      required this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(top: 5, bottom: 5),
+        width: Utilities.getSize(context).width * 0.9,
+        padding: EdgeInsets.only(top: 16, bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(color: Colors.white.withOpacity(0.4), blurRadius: 10)
+          ],
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -85,8 +157,11 @@ class _MyBackgroundState extends State<MyBackground> {
 class MyInputField extends StatefulWidget {
   TextEditingController controller;
   String hint;
-  MyInputField({Key? key, required this.controller, required this.hint})
-      : super(key: key);
+  MyInputField({
+    Key? key,
+    required this.controller,
+    required this.hint,
+  }) : super(key: key);
 
   @override
   State<MyInputField> createState() => _MyInputFieldState();
@@ -96,31 +171,19 @@ class _MyInputFieldState extends State<MyInputField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 5),
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(15),
-      //   border: Border.all(width: 1,color: Colors.white),
-      // ),
+      margin: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const EdgeInsets.only(left: 10.0),
         child: TextField(
-            controller: widget.controller,
-            style: const TextStyle(fontSize: 20, color: Colors.white60),
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-              ),
-              hintText: widget.hint,
-              hintStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white54
-                  ),
-            )),
+          controller: widget.controller,
+          decoration:
+              InputDecoration(border: InputBorder.none, hintText: widget.hint),
+        ),
       ),
     );
   }
@@ -132,8 +195,12 @@ class _MyInputFieldState extends State<MyInputField> {
 class MyPasswordInputField extends StatefulWidget {
   TextEditingController controller;
   String hint;
-  MyPasswordInputField({Key? key, required this.controller, required this.hint})
-      : super(key: key);
+
+  MyPasswordInputField({
+    Key? key,
+    required this.controller,
+    required this.hint,
+  }) : super(key: key);
 
   @override
   State<MyPasswordInputField> createState() => _MyPasswordInputFieldState();
@@ -143,28 +210,22 @@ class _MyPasswordInputFieldState extends State<MyPasswordInputField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 5),
+      margin: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const EdgeInsets.only(left: 10.0),
         child: TextField(
-            controller: widget.controller,
-            obscureText: true,
-            obscuringCharacter: '✤',
-            style: const TextStyle(fontSize: 20, color: Colors.white60),
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-              ),
-              hintText: widget.hint,
-              hintStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white54),
-            )),
+          controller: widget.controller,
+          obscureText: true,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: widget.hint,
+          ),
+        ),
       ),
     );
   }
@@ -227,19 +288,19 @@ class MainDrawer extends StatelessWidget {
             );
           },
         ),
-        ListTile(
-          leading: const Icon(Icons.info),
-          title: const Text("Personal Information",
-              style: TextStyle(
-                fontSize: 16,
-              )),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PatientPersonalInfo()),
-            );
-          },
-        ),
+        // ListTile(
+        //   leading: const Icon(Icons.info),
+        //   title: const Text("Personal Information",
+        //       style: TextStyle(
+        //         fontSize: 16,
+        //       )),
+        //   onTap: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => PatientPersonalInfo()),
+        //     );
+        //   },
+        // ),
         ListTile(
           leading: const Icon(Icons.picture_in_picture_sharp),
           title: const Text("Pictures",
@@ -284,5 +345,47 @@ class MainDrawer extends StatelessWidget {
   }
 }
 
+//circularbutton
+class CircularButton extends StatelessWidget {
+  VoidCallback ontap;
+  String text;
+  CircularButton({Key? key, required this.ontap, required this.text})
+      : super(key: key);
 
-//circular avatar
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: ontap,
+      child: Stack(children: [
+        Container(
+            height: Utilities.getSize(context).height * 0.15,
+            width: Utilities.getSize(context).width * 0.32,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 10)
+              ],
+            ),
+            child: Center(
+                child: Text(
+              text,
+              style: GoogleFonts.lato(
+                  fontSize: 20,
+                  textStyle:
+                      TextStyle(color: Colors.deepPurple, letterSpacing: .123)),
+            ))),
+        Container(
+          height: Utilities.getSize(context).height * 0.15,
+          width: Utilities.getSize(context).width * 0.32,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                  colors: [Colors.black26, Colors.deepPurple.withOpacity(0.8)],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight)),
+        ),
+      ]),
+    );
+  }
+}

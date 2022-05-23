@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_typing_uninitialized_variables, avoid_print
 import 'dart:io' as io;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_mj/views/after_login_caretaker.dart';
+import 'package:flutter_application_mj/views/login_signup/caretaker_login.dart';
 import 'package:flutter_application_mj/views/patient_pictures.dart';
 import 'package:flutter_application_mj/views/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,54 +41,59 @@ class _PatientPersonalInfoState extends State<PatientPersonalInfo> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Patient Personal Information'),
+          backgroundColor: Colors.deepPurple,
         ),
-        drawer: const MainDrawer(),
         body: MyBackground(
             child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Visibility(visible: file != null, child: Image.file(file)),
-                InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
                 const SizedBox(
                   height: 30,
                 ),
                 imageProfile(context),
-                MyInputField(controller: name, hint: "Name"),
-                MyInputField(controller: age, hint: "Age"),
-                MyInputField(controller: spouse, hint: "Spouse"),
-                MyInputField(controller: gender, hint: "Gender"),
-                MyInputField(controller: education, hint: "Education"),
-
+                SizedBox(
+                  height: 15,
+                ),
+                MyInputField(
+                  controller: name,
+                  hint: "Name",
+                ),
+                MyInputField(
+                  controller: age,
+                  hint: "Age",
+                ),
+                MyInputField(
+                  controller: gender,
+                  hint: "Gender",
+                ),
+                MyInputField(
+                  controller: education,
+                  hint: "Education",
+                ),
                 const SizedBox(
                   height: 10,
                 ),
                 MyButton(
-                    text: "S U B M I T",
+                    text: "Submit",
                     onTap: () {
-                      if (_imageFile == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Select Picture First!")));
+                      if (_imageFile == null ||
+                          name.text == "" ||
+                          age.text == "" ||
+                          gender.text == "" ||
+                          education.text == "") {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text("Enter Complete Data!")));
                         return;
                       } else {
                         uploadFile(_imageFile);
                       }
-                    }),
-                MyButton(
-                    text: "N E X T",
-                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PatientPictures()),
+                            builder: (context) => CaretakerLogin()),
                       );
                     }),
               ],
@@ -122,7 +130,7 @@ class _PatientPersonalInfoState extends State<PatientPersonalInfo> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -183,10 +191,10 @@ class _PatientPersonalInfoState extends State<PatientPersonalInfo> {
             name.text +
             "&age=" +
             age.text +
-            "&spouse=" +
-            spouse.text +
             "&gender=" +
-            gender.text ));
+            gender.text +
+            "&cid=" +
+            Utilities.caretakerid.toString()));
     request.files.add(await http.MultipartFile.fromPath('photo', f.path));
     request.headers.addAll({'Content-type': 'multipart/formdata'});
     print('sending request...');
@@ -195,15 +203,17 @@ class _PatientPersonalInfoState extends State<PatientPersonalInfo> {
     print('response received....');
     if (res.statusCode == 200) {
       print('OK Call');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Patient added Successfully!")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Patient added Successfully!")));
       EasyLoading.dismiss();
-      Navigator.pushNamed(context, '/patient_pictures');
+      Navigator.pushNamed(context, '/caretaker_login');
     } else {
       print('Not Uploaded');
       EasyLoading.dismiss();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Oops!Something went wrong")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("Oops!Something went wrong")));
     }
   }
 }

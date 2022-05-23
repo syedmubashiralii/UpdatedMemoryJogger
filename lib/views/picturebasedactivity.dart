@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_cast, prefer_typing_uninitialized_variables, unused_import
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_cast, prefer_typing_uninitialized_variables, unused_import, avoid_print
 import 'dart:io' as io;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_mj/controllers/utilites.dart';
 import 'package:http/http.dart' as http;
@@ -27,8 +28,16 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Picture Based Activity"),
+      appBar: CupertinoNavigationBar(
+        middle: Text("Picture Based Activity"),
+        leading: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/after_login_caretaker');
+          },
+          child: Icon(Icons.arrow_back_rounded),
+        ),
+        backgroundColor: Colors.deepPurple,
+        transitionBetweenRoutes: true,
       ),
       body: MyBackground(
         child: SafeArea(
@@ -37,8 +46,36 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
-                MyInputField(controller: prompt, hint: 'Enter Prompt'),
-                SizedBox(height: 10),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: Text(
+                        "Text Based Activity",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      child: CupertinoSwitch(
+                        value: Utilities.state,
+                        onChanged: (value) {
+                          Utilities.state = value;
+                          setState(() {
+                            Navigator.pushNamed(context, '/textbasedactivity');
+                            //Utilities.state = false;
+                          });
+                        },
+                        trackColor: Colors.deepPurple,
+                      ),
+                    ),
+                  ],
+                ),
+                MyInputField(
+                  controller: prompt,
+                  hint: 'Enter Prompt',
+                ),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -46,7 +83,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
                     imageProfile1(context),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -54,16 +91,30 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
                     imageProfile3(context),
                   ],
                 ),
+                SizedBox(height: 25),
                 MyInputField(
-                    controller: corevalue, hint: 'Core Value(Option 1/2/3/4)'),
-                SizedBox(height: 15),
+                  controller: corevalue,
+                  hint: 'Core Value(Option 1/2/3/4)',
+                ),
+                SizedBox(height: 35),
                 MyButton(
                     text: 'ADD ',
-                    onTap: () {
-                      uploadFile(
-                          _imageFile, _imageFile1, _imageFile2, _imageFile3);
+                    onTap: () async {
+                      if (prompt.text == "" ||
+                          corevalue.text == "" ||
+                          _imageFile == null ||
+                          _imageFile1 == null ||
+                          _imageFile2 == null ||
+                          _imageFile3 == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text("Please enter complete data!")));
+                        //return;
+                      } else {
+                        await uploadFile(
+                            _imageFile, _imageFile1, _imageFile2, _imageFile3);
+                      }
                     }),
-                MyButton(text: 'EXIT', onTap: () {})
               ],
             ),
           ),
@@ -101,7 +152,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -132,6 +183,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
             ElevatedButton.icon(
               onPressed: () {
                 takePhoto(ImageSource.camera);
+                Colors.deepPurple;
               },
               icon: Icon(Icons.camera_alt),
               label: Text("camera"),
@@ -142,6 +194,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
             ElevatedButton.icon(
               onPressed: () {
                 takePhoto(ImageSource.gallery);
+                Colors.deepPurple;
               },
               icon: Icon(Icons.image),
               label: Text("Gallery"),
@@ -190,7 +243,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -220,6 +273,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
           children: <Widget>[
             ElevatedButton.icon(
               onPressed: () {
+                Colors.deepPurple;
                 takePhoto1(ImageSource.camera);
               },
               icon: Icon(Icons.camera_alt),
@@ -230,6 +284,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
             ),
             ElevatedButton.icon(
               onPressed: () {
+                Colors.deepPurple;
                 takePhoto1(ImageSource.gallery);
               },
               icon: Icon(Icons.image),
@@ -279,7 +334,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -309,6 +364,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
           children: <Widget>[
             ElevatedButton.icon(
               onPressed: () {
+                Colors.deepPurple;
                 takePhoto2(ImageSource.camera);
               },
               icon: Icon(Icons.camera_alt),
@@ -319,6 +375,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
             ),
             ElevatedButton.icon(
               onPressed: () {
+                Colors.deepPurple;
                 takePhoto2(ImageSource.gallery);
               },
               icon: Icon(Icons.image),
@@ -339,7 +396,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
     });
   }
 
-  //op3
+  //op4
   Widget imageProfile3(context) {
     return Center(
       child: Stack(
@@ -368,7 +425,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.camera_alt,
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     size: 28.0,
                   ),
                 ),
@@ -398,6 +455,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
           children: <Widget>[
             ElevatedButton.icon(
               onPressed: () {
+                Colors.deepPurple;
                 takePhoto3(ImageSource.camera);
               },
               icon: Icon(Icons.camera_alt),
@@ -408,6 +466,7 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
             ),
             ElevatedButton.icon(
               onPressed: () {
+                Colors.deepPurple;
                 takePhoto3(ImageSource.gallery);
               },
               icon: Icon(Icons.image),
@@ -442,18 +501,18 @@ class _PictureBasedActivityState extends State<PictureBasedActivity> {
             prompt.text +
             "&corevalue=" +
             corevalue.text));
-    request.files.add(await http.MultipartFile.fromPath('photo1', f.path));
-    request.files.add(await http.MultipartFile.fromPath('photo2', f1.path));
-    request.files.add(await http.MultipartFile.fromPath('photo3', f2.path));
-    request.files.add(await http.MultipartFile.fromPath('photo4', f3.path));
+    request.files.add(await http.MultipartFile.fromPath('photo', f.path));
+    request.files.add(await http.MultipartFile.fromPath('photoo', f1.path));
+    request.files.add(await http.MultipartFile.fromPath('photooo', f2.path));
+    request.files.add(await http.MultipartFile.fromPath('photoooo', f3.path));
     request.headers.addAll({'Content-type': 'multipart/formdata'});
     print('sending request...');
     var res = await request.send();
     print('response received....');
     if (res.statusCode == 200) {
       print('OK Call');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Activity added Successfully!")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Activity added Successfully!")));
       EasyLoading.dismiss();
       // Navigator.pushNamed(context, '/patient_pictures');
     } else {

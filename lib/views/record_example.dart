@@ -6,6 +6,7 @@ import 'package:flutter_application_mj/controllers/utilites.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
+
 //import 'package:record_example/audio_player.dart';
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;
@@ -13,6 +14,7 @@ class AudioRecorder extends StatefulWidget {
   @override
   _AudioRecorderState createState() => _AudioRecorderState();
 }
+
 class _AudioRecorderState extends State<AudioRecorder> {
   bool _isRecording = false;
   bool _isPaused = false;
@@ -28,12 +30,14 @@ class _AudioRecorderState extends State<AudioRecorder> {
     _isRecording = false;
     super.initState();
   }
+
   @override
   void dispose() {
     _timer?.cancel();
     _audioRecorder.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -158,7 +162,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
     }
 
     return Text(
-      "Record memory description",
+      "Record Picture description",
       style: TextStyle(fontSize: 12),
     );
   }
@@ -216,16 +220,19 @@ class _AudioRecorderState extends State<AudioRecorder> {
       _isStoped = true;
     });
   }
+
   Future<void> _pause() async {
     _timer?.cancel();
     await _audioRecorder.pause();
     setState(() => _isPaused = true);
   }
+
   Future<void> _resume() async {
     _startTimer();
     await _audioRecorder.resume();
     setState(() => _isPaused = false);
   }
+
   void _startTimer() {
     _timer?.cancel();
     _ampTimer?.cancel();

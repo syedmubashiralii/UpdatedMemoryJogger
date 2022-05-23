@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_mj/views/widgets.dart';
 
@@ -14,18 +15,21 @@ class _ActivityScreenIState extends State<ActivityScreenI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'ACTIVITY TYPE',
-          textAlign: TextAlign.center,
+      appBar: CupertinoNavigationBar(
+        middle: Text("Activity Type"),
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_rounded),
         ),
-        // backgroundColor: Colors.white,
-        // foregroundColor: Colors.blue ,
+        backgroundColor: Colors.deepPurple,
+        transitionBetweenRoutes: true,
       ),
       body: MyBackground(
           child: Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: 250),
           MyButton(
             text: 'Picture Based',
             onTap: () {
