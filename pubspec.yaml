@@ -1,4 +1,4 @@
-name: flutter_application_mj
+name: mj_app
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -33,8 +33,8 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  http: ^0.13.4
   cupertino_icons: ^1.0.2
+  http: ^0.13.4
   record: ^3.0.4
   flutter_sound: ^9.2.1
   audioplayers: ^0.20.1
@@ -43,6 +43,18 @@ dependencies:
   permission_handler: ^8.1.6
   file_picker: ^4.5.0
   flutter_easyloading: ^3.0.3
+  card_swiper: ^2.0.3
+  google_fonts: any
+  custom_radio_grouped_button: any
+  get: ^4.6.5
+  awesome_notifications: ^0.6.21
+  shared_preferences: ^2.0.15
+  dio: ^4.0.6
+  pull_to_refresh: ^2.0.0
+  another_flushbar: ^1.10.29
+  darq: ^1.2.1
+  convex_bottom_bar: ^3.0.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +66,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-
+ 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
