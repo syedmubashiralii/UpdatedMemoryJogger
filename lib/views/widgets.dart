@@ -1,17 +1,18 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, override_on_non_overriding_member, unused_element, must_be_immutable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_mj/views/after_login_caretaker.dart';
-import 'package:flutter_application_mj/views/patient_personal_info.dart';
-import 'package:flutter_application_mj/views/patient_pictures.dart';
-import 'package:flutter_application_mj/views/patient_remindars.dart';
-import 'package:flutter_application_mj/views/splash.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mj_app/views/AppStart.dart';
+import 'package:mj_app/views/caretakerpanel/patient_pictures.dart';
 import '../controllers/utilites.dart';
+import 'caretakerpanel/after_login_caretaker.dart';
+import 'constants.dart';
 
 //mybutton widget
 
 // ignore: must_be_immutable
+
 class MyButton extends StatelessWidget {
   String text;
   double? textSize = 12;
@@ -34,7 +35,7 @@ class MyButton extends StatelessWidget {
         width: Utilities.getSize(context).width * 0.9,
         padding: EdgeInsets.only(top: 16, bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.deepPurple,
+          color: Colors.deepPurple[300],
           boxShadow: [
             BoxShadow(color: Colors.white.withOpacity(0.4), blurRadius: 10)
           ],
@@ -98,7 +99,7 @@ class _MyBackgroundPurpleState extends State<MyBackgroundPurple> {
       height: Utilities.getSize(context).height,
       width: Utilities.getSize(context).width,
       child: widget.child,
-      color: Colors.deepPurple,
+      color: Colors.deepPurple[300],
       // decoration: const BoxDecoration(
       //     image: DecorationImage(
       //   fit: BoxFit.cover,
@@ -141,7 +142,7 @@ class ButtonPurple extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-                color: Colors.deepPurple,
+                color: Colors.deepPurple[300],
                 fontWeight: FontWeight.bold,
                 fontSize: 16),
           ),
@@ -157,10 +158,12 @@ class ButtonPurple extends StatelessWidget {
 class MyInputField extends StatefulWidget {
   TextEditingController controller;
   String hint;
+  VoidCallback? onchanged;
   MyInputField({
     Key? key,
     required this.controller,
     required this.hint,
+    this.onchanged,
   }) : super(key: key);
 
   @override
@@ -189,6 +192,45 @@ class _MyInputFieldState extends State<MyInputField> {
   }
 }
 
+MaterialBanner _showMaterialBanner(BuildContext context) {
+  String text = "";
+  return MaterialBanner(
+      content: Text(text),
+      leading: Icon(
+        Icons.warning,
+        color: Colors.deepPurple,
+      ),
+      padding: EdgeInsets.all(2),
+      backgroundColor: Colors.white,
+      contentTextStyle: TextStyle(
+          fontSize: 16, fontWeight: FontWeight.w600, color: Colors.deepPurple),
+      actions: [
+        TextButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+          },
+          child: Container(
+            //color: Colors.deepPurple,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.deepPurple,
+            ),
+
+            padding: EdgeInsets.only(left: 18, right: 18, top: 10, bottom: 10),
+            child: Text(
+              'Ok',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ),
+      ]);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+}
 //mypasswordinput field
 
 // ignore: must_be_immutable
@@ -336,7 +378,7 @@ class MainDrawer extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Splash()),
+              MaterialPageRoute(builder: (context) => AppStart()),
             );
           },
         ),
@@ -386,6 +428,42 @@ class CircularButton extends StatelessWidget {
                   end: Alignment.centerRight)),
         ),
       ]),
+    );
+  }
+}
+
+class NavBox extends StatefulWidget {
+  String buttonText;
+  VoidCallback onPress;
+  NavBox({Key? key, required this.buttonText, required this.onPress})
+      : super(key: key);
+
+  @override
+  _NavBoxState createState() => _NavBoxState();
+}
+
+class _NavBoxState extends State<NavBox> {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: widget.onPress,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
+        width: Constants.screenWidth(context),
+        decoration: BoxDecoration(
+            color: Constants.primaryColor,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(0),
+            )),
+        child: Text(
+          widget.buttonText,
+          textAlign: TextAlign.center,
+          // style: FontStyle(24, Colors.white, FontWeight.w400),
+        ),
+      ),
     );
   }
 }
