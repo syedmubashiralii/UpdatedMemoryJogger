@@ -44,7 +44,7 @@ class _AppStartState extends State<AppStart> {
               SingleChildScrollView(
                 child: Container(
                   height: 500,
-                  padding: const EdgeInsets.only(left: 32),
+                  padding: const EdgeInsets.only(left: 2),
                   child: Swiper(
                     itemCount: planets.length,
                     // autoplay: true,

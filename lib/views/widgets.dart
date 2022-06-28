@@ -259,7 +259,7 @@ class _MyPasswordInputFieldState extends State<MyPasswordInputField> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
+        padding: EdgeInsets.only(left: 10.0),
         child: TextField(
           controller: widget.controller,
           obscureText: true,
@@ -286,7 +286,7 @@ class MainDrawer extends StatelessWidget {
         Container(
           color: Colors.blueAccent,
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: Center(
             child: Column(
               children: <Widget>[
