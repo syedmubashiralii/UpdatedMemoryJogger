@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:mj_app/views/caretakerpanel/listofnotifications.dart';
 
 class MJNotification {
   static late BuildContext context;
@@ -14,10 +15,8 @@ class MJNotification {
       print(receivedNotification.body);
       await AwesomeNotifications().getGlobalBadgeCounter().then(
           (value) => AwesomeNotifications().setGlobalBadgeCounter(value - 1));
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => route));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ListOfNotification()));
     });
   }
 
