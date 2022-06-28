@@ -1,4 +1,4 @@
-class datainfo {
+class datainfo  {
   final int position;
   final String url;
   final String subname;
@@ -12,7 +12,7 @@ class datainfo {
   });
 }
 
-List<datainfo> planets = [
+List<datainfo> planets =  [
   datainfo(
     1,
     url: '/patientfirstlook',
