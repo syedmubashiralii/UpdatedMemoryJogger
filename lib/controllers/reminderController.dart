@@ -4,6 +4,8 @@ import 'package:mj_app/controllers/utilites.dart';
 import 'package:http/http.dart' as http;
 import 'package:mj_app/models/reminderModel.dart';
 
+import '../models/pastmemoriesmodel.dart';
+
 class ReminderController {
   static Future<List<ReminderModel>> getReminders() async {
     List<ReminderModel> reminders = [];
@@ -44,5 +46,28 @@ class ReminderController {
       print(ex);
     }
     return reminder;
+  }
+
+  static Future<List<PastMemoriesModel>> pastmemories() async {
+    List<PastMemoriesModel> pastmemories = [];
+    var now = DateTime.now();
+    var day = now.day < 10 ? "0${now.day}" : now.day.toString();
+    var month = now.month < 10 ? "0${now.month}" : now.month.toString();
+    var date = "$month-$day";
+    try {
+      String url = Utilities.baseurl +
+          "/memoryjogger/api/Reminder/pastmemories/" +
+          date.toString();
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        for (var item in json) {
+          pastmemories.add(PastMemoriesModel.fromJson(item));
+        }
+      }
+    } catch (ex) {
+      print(ex);
+    }
+    return pastmemories;
   }
 }

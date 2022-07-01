@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mj_app/models/PictureActivity.dart';
 import 'package:mj_app/models/activitydetailmodel.dart';
 import 'package:mj_app/models/notificationmodel.dart';
+import 'package:mj_app/models/pastmemoriesmodel.dart';
 import 'package:mj_app/models/patientmodel.dart';
 import 'package:mj_app/models/reminderModel.dart';
 
@@ -30,13 +31,15 @@ class Utilities {
   static int pictureid = 0;
   static int hasid = 0;
   static int patientid = 0;
-  static String Patientname = "Ikram Khan";
+  static String Patientname = "Robert Patricia";
   static String patientpic =
       "/memoryjogger/Content/Uploads/scaled_image_picker5289255936800318378.png";
   static String audiopath = "";
   static String imgpath = "";
   static List<ReminderModel> reminderlist = [];
   static List<DoctorModel> doctorlist = [];
+  static List<ReminderModel> upcomingeventslist = [];
+  static List<PastMemoriesModel> pastmemorieslist = [];
   static List<DoctorModel> searchlist = [];
   static List<Notificationmodel> notificationlist = [];
   static List<Getstartedmodel> getstartedlist = [];
