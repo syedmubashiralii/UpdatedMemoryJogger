@@ -75,12 +75,7 @@ Future<void> main() async {
   } catch (ex) {
     print(ex);
   }
-  runApp(
-
-      // ChangeNotifierProvider(
-      //   create: ((context) => AppBloc()),
-      //   child:
-      MaterialApp(
+  runApp(MaterialApp(
     theme: ThemeData(
       primarySwatch: Colors.deepPurple,
     ),
@@ -88,7 +83,7 @@ Future<void> main() async {
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
     routes: {
-      '/': (context) => ListOfReminders(),
+      '/': (context) => splashscreen(),
       '/aftersplash': (context) => AppStart(),
       '/caretaker_login': (context) => CaretakerLogin(),
       '/caretaker_signup': (context) => CaretakerSignup(),
@@ -113,78 +108,42 @@ Future<void> main() async {
   ));
 }
 
-// git remote add origin https://github.com/syedmubashiralii/FYP.git
-// git branch -M main
-// git push -u origin main
-
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await initializeService();
-//   runApp(const MyApp());
-// }
-
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
   await service.configure(
     androidConfiguration: AndroidConfiguration(
-      // this will be executed when app is in foreground or background in separated isolate
       onStart: onStart,
-
-      // auto start service
       autoStart: true,
       isForegroundMode: true,
     ),
     iosConfiguration: IosConfiguration(
-      // auto start service
       autoStart: true,
-
-      // this will be executed when app is in foreground in separated isolate
       onForeground: onStart,
-
-      // you have to enable background fetch capability on xcode project
       onBackground: onIosBackground,
     ),
   );
   service.startService();
 }
 
-// to ensure this is executed
-// run app from xcode, then from xcode menu, select Simulate Background Fetch
 bool onIosBackground(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
   print('FLUTTER BACKGROUND FETCH');
-
   return true;
 }
 
 void onStart(ServiceInstance service) async {
-  // Only available for flutter 3.0.0 and later
-  //DartPluginRegistrant.ensureInitialized();
-
-  // For flutter prior to version 3.0.0
-  // We have to register the plugin manually
-
-  // SharedPreferences preferences = await SharedPreferences.getInstance();
-  // await preferences.setString("hello", "world");
-
   if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
       service.setAsForegroundService();
     });
-
     service.on('setAsBackground').listen((event) {
       service.setAsBackgroundService();
     });
   }
-
   service.on('stopService').listen((event) {
     service.stopSelf();
   });
-
-  // bring to foreground
   Timer.periodic(const Duration(minutes: 1), (timer) async {
-    // final hello = preferences.getString("hello");
-    // print(hello);
     var now = DateTime.now();
     if (now.hour == 8 && now.minute == 0) {
       MJNotification.notify(
@@ -203,9 +162,7 @@ void onStart(ServiceInstance service) async {
       var month = now.month < 10 ? "0${now.month}" : now.month.toString();
       var date = "${now.year}-$month-$day";
       var minute = now.minute < 10 ? "0${now.minute}" : now.minute.toString();
-      print(date);
       var time = "${now.hour}:$minute";
-      print(time);
       if (item.rdate == date && item.rtime == time) {
         MJNotification.notify(
             "${item.rtype} Reminder!", item.rdesc.toString(), "alarm_channel");
@@ -217,22 +174,17 @@ void onStart(ServiceInstance service) async {
         content: "Updated at ${DateTime.now()}",
       );
     }
-
     print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
-
-    // test using external plugin
     final deviceInfo = DeviceInfoPlugin();
     String? device;
     if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;
       device = androidInfo.model;
     }
-
     if (Platform.isIOS) {
       final iosInfo = await deviceInfo.iosInfo;
       device = iosInfo.model;
     }
-
     service.invoke(
       'update',
       {

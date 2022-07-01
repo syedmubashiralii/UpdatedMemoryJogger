@@ -10,6 +10,7 @@ import 'package:audioplayers/web/audioplayers_web.dart';
 import 'package:device_info_plus_web/device_info_plus_web.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:flutter_sound_web/flutter_sound_web.dart';
+import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:just_audio_web/just_audio_web.dart';
 import 'package:record_web/record_web.dart';
@@ -24,6 +25,7 @@ void registerPlugins(Registrar registrar) {
   DeviceInfoPlusPlugin.registerWith(registrar);
   FilePickerWeb.registerWith(registrar);
   FlutterSoundPlugin.registerWith(registrar);
+  FluttertoastWebPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   JustAudioPlugin.registerWith(registrar);
   RecordPluginWeb.registerWith(registrar);
